@@ -1,0 +1,23 @@
+# Variaveis de ambiente — NUNCA versionar (contem credenciais)
+.env
+
+# Dependencias
+/vendor/
+/node_modules/
+
+# Uploads gerados pelos utilizadores
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Logs e ficheiros temporarios
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+
+# Sistema operativo / IDE
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/
+*.log

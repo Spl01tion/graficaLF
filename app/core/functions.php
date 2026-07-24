@@ -458,6 +458,25 @@ function upload_url(?string $ficheiro): string
     return ROOT . '/assets/img/sem-imagem.svg';
 }
 
+/**
+ * URL de uma imagem de produto. Aceita três formas:
+ *   - URL completo (ex.: Unsplash nos seeds)  -> devolve tal como está
+ *   - nome de ficheiro carregado pelo admin   -> resolve em /uploads
+ *   - vazio                                    -> marcador "sem imagem"
+ */
+function imagem_url(?string $valor): string
+{
+    if ($valor === null || $valor === '') {
+        return ROOT . '/assets/img/sem-imagem.svg';
+    }
+
+    if (str_starts_with($valor, 'http://') || str_starts_with($valor, 'https://')) {
+        return $valor;
+    }
+
+    return upload_url($valor);
+}
+
 /** Converte texto em slug para URL: "Cartões 350g" -> "cartoes-350g". */
 function str_to_url(string $texto): string
 {

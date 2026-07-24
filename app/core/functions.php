@@ -514,6 +514,67 @@ function imagem_url(?string $valor): string
     return upload_url($valor);
 }
 
+/**
+ * Valida e guarda uma imagem enviada (upload do admin).
+ *
+ * Segurança do upload (exigência do enunciado):
+ *   - verifica o código de erro do PHP
+ *   - limita o tamanho (3 MB)
+ *   - valida o MIME REAL do ficheiro (não confia na extensão enviada)
+ *   - renomeia para um nome aleatório (evita colisões e nomes maliciosos)
+ *   - a pasta /uploads tem execução de PHP desligada (.htaccess)
+ *
+ * @param  array<string,mixed>  $ficheiro  Entrada de $_FILES.
+ * @return array{ok:bool, nome:?string, erro:?string}
+ */
+function upload_imagem(array $ficheiro, string $prefixo = 'img'): array
+{
+    $falha = static fn (string $m): array => ['ok' => false, 'nome' => null, 'erro' => $m];
+
+    if (($ficheiro['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+        return $falha('Falha no envio da imagem.');
+    }
+
+    if ($ficheiro['size'] > 3 * 1024 * 1024) {
+        return $falha('A imagem não pode exceder 3 MB.');
+    }
+
+    // MIME real, lido do conteúdo do ficheiro (não do nome).
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mime  = $finfo->file($ficheiro['tmp_name']);
+
+    $extensoes = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/webp' => 'webp',
+        'image/gif'  => 'gif',
+    ];
+
+    if (! isset($extensoes[$mime])) {
+        return $falha('Formato inválido. Use JPG, PNG, WEBP ou GIF.');
+    }
+
+    if (! is_dir(UPLOADS_PATH)) {
+        @mkdir(UPLOADS_PATH, 0755, true);
+    }
+
+    $nome = $prefixo . '_' . date('Ymd') . '_' . bin2hex(random_bytes(6)) . '.' . $extensoes[$mime];
+
+    if (! move_uploaded_file($ficheiro['tmp_name'], UPLOADS_PATH . '/' . $nome)) {
+        return $falha('Não foi possível guardar a imagem.');
+    }
+
+    return ['ok' => true, 'nome' => $nome, 'erro' => null];
+}
+
+/** Apaga uma imagem carregada (se existir e não for um URL externo). */
+function apagar_upload(?string $nome): void
+{
+    if ($nome && ! str_starts_with($nome, 'http') && is_file(UPLOADS_PATH . '/' . $nome)) {
+        @unlink(UPLOADS_PATH . '/' . $nome);
+    }
+}
+
 /** Converte texto em slug para URL: "Cartões 350g" -> "cartoes-350g". */
 function str_to_url(string $texto): string
 {

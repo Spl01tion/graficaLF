@@ -1,37 +1,22 @@
 <?php
 
 /**
- * admin.php — Painel de administração (esboço).
+ * admin.php — Router do painel de administração.
  *
- * MÓDULO 2: por agora existe apenas para demonstrar o RBAC —
- * controlo_admin() exige sessão iniciada E perfil de administrador.
- * O dashboard completo (KPIs, CRUDs) é construído no Módulo 7.
+ * Protege TODA a área com controlo_admin() (RBAC) e encaminha para a
+ * secção pedida: /admin/{seccao} -> app/pages/admin/{seccao}.php
+ * (mesmo padrão do MaxaPark).
  */
 
 controlo_admin();
 
-$titulo    = 'Painel';
-$descricao = 'Administração da Gráfica Lifei.';
-require __DIR__ . '/partials/header.php';
-?>
+$secao = $url[1] ?? 'dashboard';
+$secao = $secao === '' ? 'dashboard' : preg_replace('/[^a-z0-9_-]/', '', $secao);
 
-<section class="py-5 bg-light" style="min-height: 60svh;">
-    <div class="container py-4">
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <i class="bi bi-speedometer2 fs-3 text-primary"></i>
-            <h1 class="h3 fw-bold mb-0">Painel de Administração</h1>
-        </div>
+$ficheiro = __DIR__ . '/admin/' . $secao . '.php';
 
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle me-1"></i>
-            Acesso concedido — o RBAC está a funcionar. Este é um esboço:
-            o painel completo (KPIs, produtos, categorias, marcas, pedidos,
-            cupões, utilizadores, definições, mensagens) é construído no
-            <strong>Módulo 7</strong>.
-        </div>
+if (! is_file($ficheiro)) {
+    $ficheiro = __DIR__ . '/admin/dashboard.php';
+}
 
-        <p>Olá, <strong><?= e(user('nome')) ?></strong>. Está autenticado como administrador.</p>
-    </div>
-</section>
-
-<?php require __DIR__ . '/partials/footer.php'; ?>
+require $ficheiro;

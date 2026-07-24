@@ -15,10 +15,6 @@ Options -Indexes
     RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
 </IfModule>
 
-# Impedir execução de PHP dentro da pasta de uploads (defesa contra
-# web shells disfarçadas de imagem).
-<IfModule mod_php.c>
-    <Directory "uploads">
-        php_admin_flag engine off
-    </Directory>
-</IfModule>
+# Nota: a protecção da pasta de uploads contra execução de PHP está no
+# ficheiro public/uploads/.htaccess (blocos <Directory> não são permitidos
+# dentro de um .htaccess — só na configuração principal do Apache).

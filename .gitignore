@@ -1,7 +1,7 @@
-# Variaveis de ambiente — NUNCA versionar (contem credenciais)
+# Variáveis de ambiente — NUNCA versionar (contém credenciais)
 .env
 
-# Dependencias
+# Dependências
 /vendor/
 /node_modules/
 
@@ -9,11 +9,9 @@
 /public/uploads/*
 !/public/uploads/.gitkeep
 
-# Logs e ficheiros temporarios
+# Logs
 /storage/logs/*
 !/storage/logs/.gitkeep
-/storage/cache/*
-!/storage/cache/.gitkeep
 
 # Sistema operativo / IDE
 Thumbs.db

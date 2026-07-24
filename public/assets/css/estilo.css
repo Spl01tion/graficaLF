@@ -1,0 +1,142 @@
+/* ============================================================
+   Gráfica Lifei — Folha de estilo do projecto
+   ------------------------------------------------------------
+   Customiza o Bootstrap 5 através das suas variáveis CSS
+   (--bs-*), como pede o enunciado, em vez de reescrever
+   componentes. A identidade nasce da paleta da marca.
+   ============================================================ */
+
+:root {
+    /* ---- Paleta da marca ---- */
+    --gl-azul:     #0a1e2e; /* Deep Sea Blue — fundos escuros, texto, footer */
+    --gl-vermelho: #e0202f; /* Signal Red    — cor de acção (CTAs, destaques) */
+    --gl-amarelo:  #f7d520; /* Canary Yellow — realces */
+    --gl-slate:    #3a5a70; /* Slate         — cor secundária de apoio */
+
+    /* ---- Mapeamento para o Bootstrap ---- */
+    --bs-primary:            var(--gl-vermelho);
+    --bs-primary-rgb:        224, 32, 47;
+    --bs-secondary:          var(--gl-slate);
+    --bs-secondary-rgb:      58, 90, 112;
+    --bs-dark:               var(--gl-azul);
+    --bs-dark-rgb:           10, 30, 46;
+
+    --bs-body-font-family:   'Inter', system-ui, sans-serif;
+    --bs-body-color:         #1b2b36;
+    --bs-link-color:         var(--gl-vermelho);
+    --bs-link-hover-color:   #b3161f;
+}
+
+/* Títulos com a fonte de display */
+h1, h2, h3, h4, h5, h6,
+.navbar-brand, .logo-texto {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+/* ---- Botões primários (Signal Red) ---- */
+.btn-primary {
+    --bs-btn-bg:            var(--gl-vermelho);
+    --bs-btn-border-color:  var(--gl-vermelho);
+    --bs-btn-hover-bg:      #c31923;
+    --bs-btn-hover-border-color: #c31923;
+    --bs-btn-active-bg:     #b3161f;
+    --bs-btn-color:         #fff;
+    --bs-btn-hover-color:   #fff;
+}
+
+.text-primary  { color: var(--gl-vermelho) !important; }
+.bg-dark-blue  { background-color: var(--gl-azul) !important; }
+.text-slate    { color: var(--gl-slate) !important; }
+
+/* ---- Top strip (gradiente da marca) ---- */
+.top-strip {
+    background: linear-gradient(90deg, var(--gl-azul) 0%, var(--gl-slate) 100%);
+    font-size: .82rem;
+}
+.top-strip a:hover { color: var(--gl-amarelo) !important; }
+
+/* ---- Logótipo ---- */
+.logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--gl-vermelho);
+    color: #fff;
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -1px;
+}
+.logo-texto { color: var(--gl-azul); }
+
+/* ---- Navbar ---- */
+.navbar .nav-link {
+    font-weight: 500;
+    color: var(--gl-azul);
+    padding-inline: .9rem;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: var(--gl-vermelho);
+}
+.icon-link { color: var(--gl-azul); transition: color .2s; }
+.icon-link:hover { color: var(--gl-vermelho); }
+
+/* Badge de contador (carrinho / wishlist) */
+.badge-contador {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    font-size: .62rem;
+}
+
+/* ---- Footer ---- */
+.footer { background-color: var(--gl-azul); }
+.footer-links li { margin-bottom: .5rem; }
+.footer-links a {
+    color: rgba(255, 255, 255, .7);
+    text-decoration: none;
+    transition: color .2s;
+}
+.footer-links a:hover { color: var(--gl-amarelo); }
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+    transition: background .2s, transform .2s;
+}
+.social-btn:hover {
+    background: var(--gl-vermelho);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ---- Micro-animação: revelar ao fazer scroll ---- */
+[data-revelar] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+[data-revelar].revelado {
+    opacity: 1;
+    transform: none;
+}
+
+/* Respeita quem desactivou animações no sistema (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+    [data-revelar] { opacity: 1; transform: none; transition: none; }
+    * { animation-duration: .001ms !important; }
+}

@@ -29,7 +29,7 @@ use PHPMailer\PHPMailer\Exception as PHPMailerException;
  * @param  string  $html     corpo em HTML
  * @param  string  $texto    alternativa em texto simples (opcional)
  */
-function enviar_email(string $para, string $nome, string $assunto, string $html, string $texto = ''): bool
+function enviar_email(string $para, string $nome, string $assunto, string $html, string $texto = '', string $replyTo = ''): bool
 {
     $smtpUser = env('MAIL_USERNAME');
 
@@ -55,6 +55,11 @@ function enviar_email(string $para, string $nome, string $assunto, string $html,
             (string) env('MAIL_FROM_NAME', APP_NAME)
         );
         $mail->addAddress($para, $nome);
+
+        // Reply-To (ex.: no contacto, responder directamente ao cliente).
+        if ($replyTo !== '' && filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+            $mail->addReplyTo($replyTo);
+        }
 
         $mail->isHTML(true);
         $mail->Subject = $assunto;

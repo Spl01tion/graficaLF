@@ -442,6 +442,27 @@ function rate_limit_espera(string $chave, int $janela): int
 //  9. UTILITÁRIOS (slug, moeda, redireccionar, imagens, paginação)
 // ==================================================================
 
+/**
+ * Renderiza um parcial (app/pages/partials/{nome}.php) e devolve o HTML.
+ * Usado para reaproveitar blocos (cards, offcanvas) em várias páginas e
+ * também nas respostas AJAX.
+ *
+ * @param  array<string,mixed>  $vars
+ */
+function parcial(string $nome, array $vars = []): string
+{
+    $ficheiro = dirname(__DIR__) . '/pages/partials/' . $nome . '.php';
+    if (! is_file($ficheiro)) {
+        return '';
+    }
+
+    extract($vars, EXTR_SKIP);
+    ob_start();
+    require $ficheiro;
+
+    return (string) ob_get_clean();
+}
+
 /** Redirecciona para uma página interna e termina o pedido. */
 function redirect(string $page): never
 {

@@ -32,6 +32,7 @@ require __DIR__ . '/functions.php';
 require __DIR__ . '/config.php';
 require __DIR__ . '/conexao.php';
 require __DIR__ . '/mail.php';
+require __DIR__ . '/loja.php';
 
 // 4) Fuso horário e localização (Moçambique / Português).
 date_default_timezone_set(env('APP_TIMEZONE', 'Africa/Maputo'));

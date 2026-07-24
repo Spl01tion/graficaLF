@@ -140,3 +140,102 @@ body {
     [data-revelar] { opacity: 1; transform: none; transition: none; }
     * { animation-duration: .001ms !important; }
 }
+
+/* ============================================================
+   Animações e componentes (Módulos 3-6)
+   ============================================================ */
+
+/* ---- Hero: círculos a pulsar ---- */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--gl-azul) 0%, #0d2b40 60%, var(--gl-slate) 100%);
+}
+.hero .circulo {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: .25;
+    animation: pulsar 7s ease-in-out infinite;
+}
+.hero .c1 { width: 320px; height: 320px; background: var(--gl-vermelho); top: -60px; left: -80px; }
+.hero .c2 { width: 220px; height: 220px; background: var(--gl-amarelo); bottom: -40px; right: 8%; animation-delay: 1.5s; }
+.hero .c3 { width: 160px; height: 160px; background: var(--gl-ciano, #00AEEF); top: 30%; right: 20%; animation-delay: 3s; }
+@keyframes pulsar {
+    0%, 100% { transform: scale(1);    opacity: .25; }
+    50%      { transform: scale(1.25); opacity: .10; }
+}
+
+/* ---- Objetos flutuantes do hero ---- */
+.flutua { animation: flutua 5s ease-in-out infinite; }
+.flutua.d1 { animation-delay: .6s; }
+.flutua.d2 { animation-delay: 1.2s; }
+.flutua.d3 { animation-delay: 1.8s; }
+@keyframes flutua {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-18px) rotate(2deg); }
+}
+
+/* ---- Marquee (texto a rolar infinito) ---- */
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    background: linear-gradient(90deg, var(--gl-vermelho), var(--gl-slate));
+}
+.marquee__track {
+    display: inline-block;
+    padding: 14px 0;
+    animation: marquee 28s linear infinite;
+}
+.marquee__track span { color: #fff; font-weight: 600; margin: 0 1.5rem; letter-spacing: .5px; }
+.marquee__track span i { color: var(--gl-amarelo); margin: 0 .75rem; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---- Cartão de produto ---- */
+.card-produto { transition: transform .25s ease, box-shadow .25s ease; }
+.card-produto:hover { transform: translateY(-6px); box-shadow: 0 .75rem 2rem rgba(10,30,46,.14) !important; }
+.card-produto img { transition: transform .4s ease; }
+.card-produto:hover img { transform: scale(1.06); }
+.object-fit-cover { object-fit: cover; }
+
+.btn-wishlist { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; }
+.btn-wishlist.ativo i { color: var(--gl-vermelho); }
+
+/* ---- Passos / benefícios (ícones em círculo) ---- */
+.icone-circulo {
+    width: 68px; height: 68px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(224,32,47,.1); color: var(--gl-vermelho); font-size: 1.6rem;
+}
+
+/* ---- Passo com número ---- */
+.passo-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--gl-vermelho); color: #fff; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ---- Secção "serviço" alternada ---- */
+.servico-img { border-radius: 16px; object-fit: cover; width: 100%; height: 100%; min-height: 280px; }
+
+/* ============================================================
+   Painel de administração (Módulo 7)
+   ============================================================ */
+.admin-body { background: #f1f4f7; }
+.admin-sidebar {
+    background: var(--gl-azul); min-height: 100vh; width: 250px;
+    position: fixed; top: 0; left: 0; z-index: 1030;
+}
+.admin-sidebar a {
+    color: rgba(255,255,255,.72); text-decoration: none; padding: .7rem 1.25rem;
+    display: flex; align-items: center; gap: .7rem; font-size: .93rem; transition: background .15s, color .15s;
+}
+.admin-sidebar a:hover, .admin-sidebar a.active { background: rgba(255,255,255,.08); color: #fff; border-left: 3px solid var(--gl-vermelho); }
+.admin-content { margin-left: 250px; }
+@media (max-width: 991.98px) {
+    .admin-sidebar { transform: translateX(-100%); transition: transform .2s; }
+    .admin-sidebar.aberta { transform: translateX(0); }
+    .admin-content { margin-left: 0; }
+}
+.kpi-card { border: none; border-radius: 14px; }
+.kpi-card .kpi-icon { width: 52px; height: 52px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; }

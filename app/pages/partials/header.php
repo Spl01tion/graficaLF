@@ -37,6 +37,10 @@ $flash     = get_flash();
 
     <link rel="icon" href="<?= asset('img/favicon.svg') ?>" type="image/svg+xml">
 
+    <!-- Usados pelo JavaScript (AJAX do carrinho/wishlist) -->
+    <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
+    <meta name="app-root" content="<?= e(ROOT) ?>">
+
     <!-- Google Fonts: Sora (títulos) + Inter (texto) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -142,11 +146,7 @@ $flash     = get_flash();
             <h5 class="offcanvas-title fw-bold" id="tituloCarrinho"><i class="bi bi-bag me-2"></i>O seu carrinho</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
         </div>
-        <div class="offcanvas-body d-flex flex-column">
-            <!-- Preenchido no Módulo 6 (carrinho). Placeholder por agora. -->
-            <p class="text-muted text-center my-auto">O seu carrinho está vazio.</p>
-            <a href="<?= url('shop') ?>" class="btn btn-primary w-100 mt-3">Ver produtos</a>
-        </div>
+        <?= parcial('carrinho-offcanvas') ?>
     </div>
 
     <!-- ============ NOTIFICAÇÕES (toasts) ============ -->

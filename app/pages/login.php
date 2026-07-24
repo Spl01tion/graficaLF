@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Sucesso: regista na sessão (regenera o ID) e redirecciona.
             authenticate($utilizador);
+            wishlist_carregar_da_bd(); // reúne a wishlist guardada anteriormente
             unset($_SESSION['_rate']['login']); // limpa o contador de tentativas
             flash('sucesso', 'Bem-vindo de volta, ' . $utilizador['nome'] . '!');
             redirect(destino_pos_login());

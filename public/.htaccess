@@ -7,6 +7,11 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # SEO: sitemap e robots são gerados dinamicamente (o rewrite genérico
+    # removeria o ponto do nome, por isso mapeamo-los explicitamente).
+    RewriteRule ^sitemap\.xml$ index.php?url=sitemap [L]
+    RewriteRule ^robots\.txt$  index.php?url=robots [L]
+
     # Ficheiros/pastas reais (css, js, imagens) são servidos directamente.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

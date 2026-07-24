@@ -52,6 +52,25 @@ $flash     = get_flash();
 
     <!-- Folha de estilo do projecto (paleta + customizações) -->
     <link href="<?= asset('css/estilo.css') ?>" rel="stylesheet">
+
+    <!-- Dados estruturados (SEO) -->
+    <script type="application/ld+json">
+    <?= json_encode([
+        '@context' => 'https://schema.org',
+        '@type'    => 'LocalBusiness',
+        'name'     => config_get('site_name', APP_NAME),
+        'image'    => asset('img/og-image.jpg'),
+        'email'    => config_get('site_email', 'geral@graficalifei.co.mz'),
+        'telephone' => config_get('site_phone', ''),
+        'address'  => [
+            '@type'           => 'PostalAddress',
+            'streetAddress'   => config_get('site_address', 'Maputo'),
+            'addressLocality' => 'Maputo',
+            'addressCountry'  => 'MZ',
+        ],
+        'url'      => ROOT,
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>
+    </script>
 </head>
 
 <body>

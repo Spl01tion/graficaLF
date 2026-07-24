@@ -47,4 +47,16 @@ if (env('APP_DEBUG', 'false') === 'true') {
     error_reporting(E_ALL);
     ini_set('display_errors', '0');
     ini_set('log_errors', '1');
+
+    // Em produção, uma excepção não tratada é registada e mostra uma
+    // página amigável — nunca uma stack trace (que revela caminhos e SQL).
+    set_exception_handler(static function (Throwable $e): void {
+        registar_log('Excepção: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
+        http_response_code(500);
+        if (is_file(BASE_PATH . '/app/pages/500.php')) {
+            require BASE_PATH . '/app/pages/500.php';
+        } else {
+            echo 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+        }
+    });
 }

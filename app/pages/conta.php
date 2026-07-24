@@ -46,10 +46,36 @@ require __DIR__ . '/partials/header.php';
             </a>
         <?php endif; ?>
 
+        <?php
+        $meusPedidos = query(
+            'SELECT * FROM orders WHERE id_user = :u ORDER BY created_at DESC',
+            ['u' => user('id_user')]
+        ) ?: [];
+        ?>
         <div class="card border-0 shadow-sm mt-4">
             <div class="card-body p-4">
                 <h2 class="h6 fw-bold mb-3">Os meus pedidos</h2>
-                <p class="text-muted mb-0">O histórico de pedidos aparecerá aqui (Módulo 6).</p>
+                <?php if ($meusPedidos === []): ?>
+                    <p class="text-muted mb-0">Ainda não fez nenhum pedido. <a href="<?= url('shop') ?>">Ver produtos</a>.</p>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr><th>Referência</th><th>Data</th><th>Total</th><th>Estado</th></tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($meusPedidos as $p): ?>
+                                    <tr>
+                                        <td class="fw-semibold"><?= e($p['referencia']) ?></td>
+                                        <td class="small text-muted"><?= e(date('d/m/Y', strtotime($p['created_at']))) ?></td>
+                                        <td><?= e(moeda($p['total'])) ?></td>
+                                        <td><span class="badge bg-<?= estado_cor($p['status']) ?>"><?= e(estado_pedido($p['status'])) ?></span></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

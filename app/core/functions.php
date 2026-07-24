@@ -242,6 +242,22 @@ function eh_admin(): bool
     return logado() && (user('role') === 'admin');
 }
 
+/**
+ * Página de destino após o login: o admin vai para o painel, o cliente
+ * volta para onde tentava ir (url_pretendido) ou para a página inicial.
+ */
+function destino_pos_login(): string
+{
+    if (eh_admin()) {
+        return 'admin';
+    }
+
+    $pretendido = $_SESSION['url_pretendido'] ?? '';
+    unset($_SESSION['url_pretendido']);
+
+    return $pretendido !== '' ? $pretendido : 'home';
+}
+
 /** Termina a sessão por completo (logout). */
 function terminar_sessao(): void
 {

@@ -27,10 +27,11 @@ if (! is_file(BASE_PATH . '/.env')) {
 Dotenv\Dotenv::createImmutable(BASE_PATH)->safeLoad();
 
 // 3) Funções auxiliares primeiro (definem env(), usada logo a seguir),
-//    depois a configuração e as credenciais da base de dados.
+//    depois a configuração, as credenciais da base de dados e o email.
 require __DIR__ . '/functions.php';
 require __DIR__ . '/config.php';
 require __DIR__ . '/conexao.php';
+require __DIR__ . '/mail.php';
 
 // 4) Fuso horário e localização (Moçambique / Português).
 date_default_timezone_set(env('APP_TIMEZONE', 'Africa/Maputo'));

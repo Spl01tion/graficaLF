@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: ./htdocs/
+          server-dir: ./graficalf.infinityfreeapp.com/htdocs/
           # Nunca gerido pelo deploy: .env (segredos, só no servidor),
           # imagens enviadas pelo admin e logs em tempo de execução.
           exclude: |

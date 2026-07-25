@@ -112,9 +112,11 @@ Requer estes secrets em **Settings → Secrets and variables → Actions**:
 
 O workflow **nunca** toca em `.env`, `uploads/` nem `storage/logs/` no
 servidor (excluídos explicitamente) — o `.env` de produção só é criado à
-mão, uma vez, no passo 2 acima. Se a tua conta FTP já entra directamente
-dentro de `htdocs/` (em vez de mostrar `htdocs/` como subpasta), ajusta
-`server-dir: ./htdocs/` para `server-dir: ./` no workflow.
+mão, uma vez, no passo 2 acima.
+
+Domínio: `graficalf.infinityfreeapp.com` — pasta no FTP:
+`graficalf.infinityfreeapp.com/htdocs` (já configurado como `server-dir`
+no workflow e como `APP_URL` no `.env.production`).
 
 ## Estrutura
 

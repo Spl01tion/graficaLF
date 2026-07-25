@@ -21,7 +21,7 @@
     --bs-dark:               var(--gl-azul);
     --bs-dark-rgb:           10, 30, 46;
 
-    --bs-body-font-family:   'Inter', system-ui, sans-serif;
+    --bs-body-font-family:   'Poppins', sans-serif;
     --bs-body-color:         #1b2b36;
     --bs-link-color:         var(--gl-vermelho);
     --bs-link-hover-color:   #b3161f;
@@ -30,7 +30,7 @@
 /* Títulos com a fonte de display */
 h1, h2, h3, h4, h5, h6,
 .navbar-brand, .logo-texto {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
 }
 
@@ -65,23 +65,30 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
     background: var(--gl-vermelho);
     color: #fff;
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 1.15rem;
     letter-spacing: -1px;
 }
 .logo-texto { color: var(--gl-azul); }
 
 /* ---- Navbar ---- */
+#navbarPrincipal {
+    padding-block: 1.1rem;
+}
+.navbar-brand {
+    font-size: 1.5rem;
+}
 .navbar .nav-link {
     font-weight: 500;
+    font-size: 1.05rem;
     color: var(--gl-azul);
-    padding-inline: .9rem;
+    padding-inline: 1.1rem;
 }
 .navbar .nav-link:hover,
 .navbar .nav-link.active {
@@ -89,6 +96,44 @@ body {
 }
 .icon-link { color: var(--gl-azul); transition: color .2s; }
 .icon-link:hover { color: var(--gl-vermelho); }
+
+/* ---- Navbar: efeito "pill" centrado ao fazer scroll ---- */
+#navbarPrincipal {
+    z-index: 1030;
+    transition: background-color .35s ease, padding-block .35s ease, box-shadow .35s ease;
+}
+#navbarPrincipal .container {
+    transition: max-width .35s ease, border-radius .35s ease,
+                box-shadow .35s ease, padding .35s ease, background-color .35s ease;
+}
+#navbarPrincipal.navbar-pill {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding-block: .75rem;
+}
+#navbarPrincipal.navbar-pill .container {
+    max-width: 960px;
+    background-color: #fff;
+    border-radius: 50rem;
+    padding-inline: 1.75rem;
+    padding-block: .45rem;
+    box-shadow: 0 .6rem 2rem rgba(10, 30, 46, .18);
+}
+
+/* Com o menu hamburger aberto, suspende o formato pill (senão o dropdown fica espremido) */
+#navbarPrincipal.navbar-pill.menu-aberto {
+    background-color: #fff !important;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    padding-block: .85rem;
+}
+#navbarPrincipal.navbar-pill.menu-aberto .container {
+    max-width: 100%;
+    background-color: transparent;
+    border-radius: 0;
+    padding-inline: var(--bs-gutter-x, .75rem);
+    padding-block: 0;
+    box-shadow: none;
+}
 
 /* Badge de contador (carrinho / wishlist) */
 .badge-contador {

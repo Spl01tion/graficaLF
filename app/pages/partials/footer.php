@@ -62,9 +62,8 @@
             </div>
 
             <hr class="border-white-50 my-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-white-50">
+            <div class="text-center small text-white-50">
                 <span>&copy; <?= date('Y') ?> <?= e(APP_NAME) ?>. Todos os direitos reservados.</span>
-                <span>Feito com <i class="bi bi-heart-fill text-danger"></i> em Moçambique</span>
             </div>
         </div>
     </footer>

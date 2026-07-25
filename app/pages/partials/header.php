@@ -41,10 +41,10 @@ $flash     = get_flash();
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
     <meta name="app-root" content="<?= e(ROOT) ?>">
 
-    <!-- Google Fonts: Sora (títulos) + Inter (texto) -->
+    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 + Icons (via CDN — permitido pelo enunciado) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -93,8 +93,8 @@ $flash     = get_flash();
         </div>
     </div>
 
-    <!-- ============ NAVBAR (sticky) ============ -->
-    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
+    <!-- ============ NAVBAR (sticky, vira pill ao fazer scroll) ============ -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm" id="navbarPrincipal">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="<?= url('home') ?>">
                 <span class="logo-badge">GL</span>

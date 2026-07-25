@@ -13,6 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => bootstrap.Toast.getOrCreateInstance(t).hide(), 4000);
     });
 
+    // ---- Navbar em formato "pill" ao fazer scroll ----
+    const navbar = document.getElementById('navbarPrincipal');
+    const navMenu = document.getElementById('navMenu');
+    if (navbar) {
+        const aoScrollar = () => navbar.classList.toggle('navbar-pill', window.scrollY > 60);
+        aoScrollar();
+        window.addEventListener('scroll', aoScrollar, { passive: true });
+    }
+    // Enquanto o menu hamburger (offcanvas do navbar) está aberto, suspende o formato pill.
+    if (navbar && navMenu) {
+        navMenu.addEventListener('show.bs.collapse', () => navbar.classList.add('menu-aberto'));
+        navMenu.addEventListener('hidden.bs.collapse', () => navbar.classList.remove('menu-aberto'));
+    }
+
     // ---- Revelar ao fazer scroll ----
     const alvos = document.querySelectorAll('[data-revelar]');
     if (alvos.length) {

@@ -1,5 +1,7 @@
 # Variáveis de ambiente — NUNCA versionar (contém credenciais)
 .env
+.env.*
+!.env.example
 
 # Dependências
 /vendor/

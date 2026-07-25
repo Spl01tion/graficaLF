@@ -117,9 +117,9 @@ require __DIR__ . '/partials/header.php';
                         <i class="bi bi-share-fill text-primary fs-4"></i>
                         <div>
                             <strong>Redes sociais</strong><br>
-                            <a href="<?= e(config_get('facebook_url', '#')) ?>" class="text-decoration-none me-2"><i class="bi bi-facebook"></i></a>
-                            <a href="<?= e(config_get('instagram_url', '#')) ?>" class="text-decoration-none me-2"><i class="bi bi-instagram"></i></a>
-                            <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="text-decoration-none"><i class="bi bi-whatsapp"></i></a>
+                            <a href="<?= e(config_get('facebook_url', '#')) ?>" class="text-decoration-none text-primary fs-5 me-2"><i class="bi bi-facebook"></i></a>
+                            <a href="<?= e(config_get('instagram_url', '#')) ?>" class="text-decoration-none text-primary fs-5 me-2"><i class="bi bi-instagram"></i></a>
+                            <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="text-decoration-none text-primary fs-5"><i class="bi bi-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>

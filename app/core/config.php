@@ -19,8 +19,13 @@ define('ROOT', rtrim(env('APP_URL', 'http://localhost/grafica_lifei/public'), '/
 // Nome da aplicação (título, emails, rodapé).
 define('APP_NAME', env('APP_NAME', 'Gráfica Lifei'));
 
+// Pasta pública (webroot): em desenvolvimento é a subpasta "public/"; em
+// produção num host partilhado que só dá acesso a "htdocs/" (ex.: InfinityFree),
+// o conteúdo de public/ é publicado directamente na raiz — ver README.
+define('PUBLIC_PATH', is_dir(BASE_PATH . '/public') ? BASE_PATH . '/public' : BASE_PATH);
+
 // Caminho físico da pasta de uploads (imagens de produtos).
-define('UPLOADS_PATH', dirname(__DIR__, 2) . '/public/uploads');
+define('UPLOADS_PATH', PUBLIC_PATH . '/uploads');
 
 // Moeda usada em todo o site.
 define('MOEDA', 'MZN');

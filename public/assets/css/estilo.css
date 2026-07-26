@@ -211,14 +211,38 @@ body {
     50%      { transform: scale(1.25); opacity: .10; }
 }
 
+/* ---- Hero: slide (carousel) ---- */
+.hero .carousel-item { transition: transform 1s cubic-bezier(.4, 0, .2, 1); }
+.hero .carousel-control-prev,
+.hero .carousel-control-next { width: 6%; opacity: .5; transition: opacity .2s ease; }
+.hero .carousel-control-prev:hover,
+.hero .carousel-control-next:hover { opacity: 1; }
+.hero .carousel-indicators { margin-bottom: .5rem; }
+.hero .carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--gl-amarelo);
+    opacity: .4;
+    border: 0;
+}
+.hero .carousel-indicators .active { opacity: 1; }
+
 /* ---- Objetos flutuantes do hero ---- */
+.hero-mockups { position: relative; height: 660px; overflow: hidden; }
+.hero-mockups .flutua {
+    position: absolute;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .35));
+}
 .flutua { animation: flutua 5s ease-in-out infinite; }
 .flutua.d1 { animation-delay: .6s; }
 .flutua.d2 { animation-delay: 1.2s; }
 .flutua.d3 { animation-delay: 1.8s; }
 @keyframes flutua {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50%      { transform: translateY(-18px) rotate(2deg); }
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -18px; }
 }
 
 /* ---- Marquee (texto a rolar infinito) ---- */

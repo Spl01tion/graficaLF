@@ -32,54 +32,99 @@ require __DIR__ . '/partials/header.php';
     <span class="circulo c2"></span>
     <span class="circulo c3"></span>
 
-    <div class="container position-relative py-5">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
-                    <i class="bi bi-star-fill me-1"></i>Impressão &amp; Design em Maputo
-                </span>
-                <h1 class="display-3 fw-bold mb-3" data-revelar>
-                    Damos vida às suas <span class="text-warning">ideias</span> impressas
-                </h1>
-                <p class="lead text-white-50 mb-4" data-revelar style="max-width: 520px;">
-                    Cartões de visita, banners, t-shirts, stickers, catálogos e muito mais —
-                    com qualidade profissional e entrega rápida.
-                </p>
-                <div class="d-flex gap-3 flex-wrap" data-revelar>
-                    <a href="<?= url('shop') ?>" class="btn btn-primary btn-lg px-4">
-                        <i class="bi bi-bag me-1"></i>Ver Produtos
-                    </a>
-                    <a href="<?= url('contacto') ?>" class="btn btn-outline-light btn-lg px-4">
-                        Pedir Orçamento
-                    </a>
+    <div id="heroCarousel" class="carousel slide w-100" data-bs-ride="carousel" data-bs-interval="6000">
+        <div class="carousel-inner">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="container position-relative py-5">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-6">
+                            <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
+                                <i class="bi bi-star-fill me-1"></i>Impressão &amp; Design em Maputo
+                            </span>
+                            <h1 class="display-3 fw-bold mb-3" data-revelar>
+                                Damos vida às suas <span class="text-warning">ideias</span> impressas
+                            </h1>
+                            <p class="lead text-white-50 mb-4" data-revelar style="max-width: 520px;">
+                                Cartões de visita, banners, t-shirts, stickers, catálogos e muito mais —
+                                com qualidade profissional e entrega rápida.
+                            </p>
+                            <div class="d-flex gap-3 flex-wrap" data-revelar>
+                                <a href="<?= url('shop') ?>" class="btn btn-primary btn-lg px-4">
+                                    <i class="bi bi-bag me-1"></i>Ver Produtos
+                                </a>
+                                <a href="<?= url('contacto') ?>" class="btn btn-outline-light btn-lg px-4">
+                                    Pedir Orçamento
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Objetos flutuantes (mockups) -->
+                        <div class="col-lg-6 d-none d-lg-block">
+                            <div class="hero-mockups">
+                                <img src="<?= asset('img/mockups/MenHoodie.webp') ?>" class="flutua d2" alt="Hoodie personalizado" style="width:58%; top:0; left:0; transform:rotate(0deg); z-index:1;">
+                                <img src="<?= asset('img/mockups/tshirt-mockup.webp') ?>" class="flutua d1" alt="T-shirt personalizada" style="width:100%; top:5%; right:-20%; transform:rotate(0deg); z-index:2;">
+                                <img src="<?= asset('img/mockups/mug_mockup.webp') ?>" class="flutua d3" alt="Caneca personalizada" style="width:54%; bottom:0; left:-5%; transform:rotate(0deg); z-index:4;">
+                                <img src="<?= asset('img/mockups/CapMockup.webp') ?>" class="flutua d2" alt="Boné personalizado" style="width:52%; bottom:6%; right:12%; transform:rotate(0deg); z-index:3;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Objetos flutuantes (mockups) -->
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="flutua d1 bg-white rounded-4 shadow-lg overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&q=80" class="w-100" alt="T-shirt personalizada" style="height:180px;object-fit:cover;">
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="container position-relative py-5">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-6">
+                            <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
+                                <i class="bi bi-flag-fill me-1"></i>Materiais Promocionais
+                            </span>
+                            <h1 class="display-3 fw-bold mb-3">
+                                Dê <span class="text-warning">visibilidade</span> à sua marca
+                            </h1>
+                            <p class="lead text-white-50 mb-4" style="max-width: 520px;">
+                                Bandeiras, banners, roll-ups e catálogos personalizados —
+                                ideais para eventos, lojas e apresentações.
+                            </p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <a href="<?= url('shop') ?>" class="btn btn-primary btn-lg px-4">
+                                    <i class="bi bi-bag me-1"></i>Ver Produtos
+                                </a>
+                                <a href="<?= url('contacto') ?>" class="btn btn-outline-light btn-lg px-4">
+                                    Pedir Orçamento
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6 mt-5">
-                        <div class="flutua d2 bg-white rounded-4 shadow-lg overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1611532736579-6b16e2b50449?w=500&q=80" class="w-100" alt="Cartões de visita" style="height:180px;object-fit:cover;">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="flutua d3 bg-white rounded-4 shadow-lg overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500&q=80" class="w-100" alt="Roll-up banner" style="height:180px;object-fit:cover;">
-                        </div>
-                    </div>
-                    <div class="col-6 mt-n5">
-                        <div class="flutua d1 bg-white rounded-4 shadow-lg overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=500&q=80" class="w-100" alt="Stickers" style="height:180px;object-fit:cover;">
+
+                        <!-- Objetos flutuantes (mockups) — mesma disposição, novos produtos -->
+                        <div class="col-lg-6 d-none d-lg-block">
+                            <div class="hero-mockups">
+                                <img src="<?= asset('img/mockups/bandeira.webp') ?>" class="flutua d2" alt="Bandeira personalizada" style="width:58%; top:0; left:0; transform:rotate(0deg); z-index:1;">
+                                <img src="<?= asset('img/mockups/banner.webp') ?>" class="flutua d1" alt="Banner personalizado" style="width:100%; top:5%; right:-20%; transform:rotate(0deg); z-index:2;">
+                                <img src="<?= asset('img/mockups/bookcatalogs.webp') ?>" class="flutua d3" alt="Catálogo personalizado" style="width:54%; bottom:0; left:-5%; transform:rotate(0deg); z-index:4;">
+                                <img src="<?= asset('img/mockups/rollup.webp') ?>" class="flutua d2" alt="Roll-up personalizado" style="width:52%; bottom:6%; right:12%; transform:rotate(0deg); z-index:3;">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Seguinte</span>
+        </button>
+
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
         </div>
     </div>
 </section>
@@ -230,25 +275,30 @@ require __DIR__ . '/partials/header.php';
             <div class="col-lg-6" data-revelar>
                 <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm mb-4">
                     <iframe src="<?= e(config_get('maps_embed', 'https://www.google.com/maps?q=Maputo&output=embed')) ?>"
-                            style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <div class="d-flex gap-2"><i class="bi bi-geo-alt-fill text-primary fs-5"></i>
-                            <div><strong>Morada</strong><br><span class="text-muted small"><?= e(config_get('site_address', 'Maputo, Moçambique')) ?></span></div></div>
+                            <div><strong>Morada</strong><br><span class="text-muted small"><?= e(config_get('site_address', 'Maputo, Moçambique')) ?></span></div>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="d-flex gap-2"><i class="bi bi-telephone-fill text-primary fs-5"></i>
-                            <div><strong>Telefone</strong><br><span class="text-muted small"><?= e(config_get('site_phone', '+258 84 000 0000')) ?></span></div></div>
+                            <div><strong>Telefone</strong><br><span class="text-muted small"><?= e(config_get('site_phone', '+258 84 000 0000')) ?></span></div>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="d-flex gap-2"><i class="bi bi-envelope-fill text-primary fs-5"></i>
-                            <div><strong>Email</strong><br><span class="text-muted small"><?= e(config_get('site_email', 'geral@graficalifei.co.mz')) ?></span></div></div>
+                            <div><strong>Email</strong><br><span class="text-muted small"><?= e(config_get('site_email', 'geral@graficalifei.co.mz')) ?></span></div>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="d-flex gap-2"><i class="bi bi-whatsapp text-primary fs-5"></i>
                             <div><strong>WhatsApp</strong><br>
-                                <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="text-muted small text-decoration-none">Enviar mensagem</a></div></div>
+                                <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="text-muted small text-decoration-none">Enviar mensagem</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

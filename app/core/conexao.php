@@ -17,7 +17,8 @@
 
 declare(strict_types=1);
 
-if ($_SERVER['SERVER_NAME'] === 'localhost') {
+// Na linha de comandos (seeds, tarefas) não existe SERVER_NAME — assume-se local.
+if (($_SERVER['SERVER_NAME'] ?? 'localhost') === 'localhost') {
     define('DBHOST', env('DB_HOST', 'localhost'));
     define('DBPORT', env('DB_PORT', '3306'));
     define('DBNAME', env('DB_NAME', 'graficalf_db'));

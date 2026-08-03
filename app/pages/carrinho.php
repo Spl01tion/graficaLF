@@ -109,10 +109,14 @@ require __DIR__ . '/partials/header.php';
         <h1 class="h3 fw-bold mb-4"><i class="bi bi-bag me-2"></i>O seu carrinho</h1>
 
         <?php if ($itens === []): ?>
-            <div class="text-center py-5">
-                <i class="bi bi-bag-x display-4 text-muted"></i>
-                <p class="text-muted mt-3">O seu carrinho está vazio.</p>
-                <a href="<?= url('shop') ?>" class="btn btn-primary">Ver produtos</a>
+            <div class="estado-vazio">
+                <div class="estado-vazio__icone mb-4"><i class="bi bi-bag-x"></i></div>
+                <h2 class="h4 fw-bold mb-2">O seu carrinho está vazio</h2>
+                <p class="text-muted mb-4">Explore a nossa loja e adicione os produtos que precisa.</p>
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <a href="<?= url('shop') ?>" class="btn btn-primary px-4"><i class="bi bi-bag me-1"></i>Ver produtos</a>
+                    <a href="<?= url('contacto') ?>" class="btn btn-outline-primary px-4">Pedir orçamento</a>
+                </div>
             </div>
         <?php else: ?>
             <div class="row g-4">

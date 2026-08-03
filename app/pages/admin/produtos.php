@@ -305,61 +305,198 @@ if ($form !== null) {
 }
 
 // ==================================================================
-//  LISTA
+//  LISTA (pesquisa + filtros + paginação)
 // ==================================================================
+$q          = trim((string) ($_GET['q'] ?? ''));
+$fCategoria = (int) ($_GET['categoria'] ?? 0);
+$fEstado    = (string) ($_GET['estado'] ?? '');
+$porPagina  = 20;
+
+// Filtros — sempre com marcadores, nunca concatenados no SQL.
+$where  = ['1 = 1'];
+$params = [];
+
+if ($q !== '') {
+    // Com prepares nativos (emulação desligada) cada marcador só pode
+    // aparecer uma vez — daí :q1/:q2/:q3 com o mesmo valor.
+    $where[]      = '(p.nome LIKE :q1 OR p.sku LIKE :q2 OR p.slug LIKE :q3)';
+    $params['q1'] = $params['q2'] = $params['q3'] = '%' . $q . '%';
+}
+if ($fCategoria > 0) {
+    $where[]       = 'p.id_category = :cat';
+    $params['cat'] = $fCategoria;
+}
+if ($fEstado === '1' || $fEstado === '0') {
+    $where[]         = 'p.ativo = :ativo';
+    $params['ativo'] = (int) $fEstado;
+}
+$whereSql = implode(' AND ', $where);
+
+$total        = (int) (query_row("SELECT COUNT(*) AS t FROM products p WHERE {$whereSql}", $params)['t'] ?? 0);
+$totalPaginas = max(1, (int) ceil($total / $porPagina));
+$pagina       = min(max(1, (int) ($_GET['page'] ?? 1)), $totalPaginas);
+$offset       = ($pagina - 1) * $porPagina;
+
 $produtos = query(
-    'SELECT p.*, c.nome AS categoria_nome,
+    "SELECT p.*, c.nome AS categoria_nome,
             (SELECT image FROM product_images i WHERE i.id_product=p.id_product ORDER BY principal DESC, ordem LIMIT 1) AS imagem
      FROM products p LEFT JOIN categories c ON c.id_category=p.id_category
-     ORDER BY p.created_at DESC'
+     WHERE {$whereSql}
+     ORDER BY p.created_at DESC, p.id_product DESC
+     LIMIT {$porPagina} OFFSET {$offset}",
+    $params
 ) ?: [];
+
+$categorias = query('SELECT id_category, nome FROM categories ORDER BY nome') ?: [];
+$filtros    = ['q' => $q, 'categoria' => $fCategoria ?: '', 'estado' => $fEstado];
+
+$tabela = parcial('admin-produtos-tabela', compact('produtos', 'total', 'pagina', 'totalPaginas', 'filtros'));
+
+// Pesquisa dinâmica: devolve só a tabela, sem o resto do painel.
+if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') {
+    header('Content-Type: text/html; charset=utf-8');
+    echo $tabela;
+    return;
+}
 
 $tituloPainel = 'Produtos';
 require __DIR__ . '/../partials/admin_header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <p class="text-muted mb-0"><?= count($produtos) ?> produto(s)</p>
-    <a href="<?= url('admin/produtos?form=novo') ?>" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Novo produto</a>
+<div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+    <h2 class="h6 fw-bold mb-0 text-nowrap">Lista de produtos</h2>
+    <a href="<?= url('admin/produtos?form=novo') ?>" class="btn btn-primary btn-sm text-nowrap"><i class="bi bi-plus-lg me-1"></i>Novo produto</a>
 </div>
 
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table align-middle mb-0">
-            <thead class="table-light"><tr><th></th><th>Nome</th><th>Categoria</th><th>Preço</th><th>Stock</th><th>Estado</th><th class="text-end">Acções</th></tr></thead>
-            <tbody>
-                <?php foreach ($produtos as $p): ?>
-                    <tr>
-                        <td style="width:60px;"><img src="<?= e(imagem_url($p['imagem'])) ?>" class="rounded object-fit-cover" style="width:44px;height:44px;"></td>
-                        <td>
-                            <div class="fw-semibold"><?= e($p['nome']) ?></div>
-                            <?php if ($p['destaque']): ?><span class="badge bg-warning text-dark">Destaque</span><?php endif; ?>
-                        </td>
-                        <td class="small"><?= e($p['categoria_nome'] ?? '—') ?></td>
-                        <td>
-                            <?php if ($p['preco_promo']): ?>
-                                <span class="text-decoration-line-through text-muted small"><?= e(moeda($p['preco'])) ?></span>
-                                <span class="text-primary fw-semibold"><?= e(moeda($p['preco_promo'])) ?></span>
-                            <?php else: ?><?= e(moeda($p['preco'])) ?><?php endif; ?>
-                        </td>
-                        <td><?= (int) $p['stock'] ?></td>
-                        <td><span class="badge bg-<?= $p['ativo'] ? 'success' : 'secondary' ?>"><?= $p['ativo'] ? 'Activo' : 'Inactivo' ?></span></td>
-                        <td class="text-end text-nowrap">
-                            <a href="<?= url('shop/' . $p['slug']) ?>" target="_blank" class="btn btn-sm btn-outline-secondary" title="Ver"><i class="bi bi-eye"></i></a>
-                            <a href="<?= url('admin/produtos?form=' . (int) $p['id_product']) ?>" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                            <form method="post" action="<?= url('admin/produtos') ?>" class="d-inline" onsubmit="return confirm('Apagar este produto?')">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="acao" value="apagar">
-                                <input type="hidden" name="id" value="<?= (int) $p['id_product'] ?>">
-                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                <?php if ($produtos === []): ?><tr><td colspan="7" class="text-center text-muted">Sem produtos.</td></tr><?php endif; ?>
-            </tbody>
-        </table>
+<!-- Pesquisa dinâmica. Sem JavaScript continua a funcionar como formulário GET. -->
+<form method="get" action="<?= url('admin/produtos') ?>" id="filtros-produtos" class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-3">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="search" name="q" id="busca-produtos" class="form-control border-start-0 ps-0"
+                           value="<?= e($q) ?>" placeholder="Pesquisar por nome, SKU ou slug..."
+                           autocomplete="off" aria-label="Pesquisar produtos">
+                    <span class="input-group-text bg-white d-none" id="busca-spinner">
+                        <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <select name="categoria" class="form-select" aria-label="Filtrar por categoria">
+                    <option value="">Todas as categorias</option>
+                    <?php foreach ($categorias as $c): ?>
+                        <option value="<?= (int) $c['id_category'] ?>" <?= $fCategoria === (int) $c['id_category'] ? 'selected' : '' ?>>
+                            <?= e($c['nome']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-6 col-md-3">
+                <select name="estado" class="form-select" aria-label="Filtrar por estado">
+                    <option value="">Todos os estados</option>
+                    <option value="1" <?= $fEstado === '1' ? 'selected' : '' ?>>Activos</option>
+                    <option value="0" <?= $fEstado === '0' ? 'selected' : '' ?>>Inactivos</option>
+                </select>
+            </div>
+        </div>
+        <noscript><button class="btn btn-primary btn-sm mt-2">Filtrar</button></noscript>
     </div>
-</div>
+</form>
+
+<div id="lista-produtos"><?= $tabela ?></div>
+
+<script>
+    // ---- Pesquisa dinâmica da lista de produtos ----
+    (() => {
+        const form    = document.getElementById('filtros-produtos');
+        const lista   = document.getElementById('lista-produtos');
+        const busca   = document.getElementById('busca-produtos');
+        const spinner = document.getElementById('busca-spinner');
+        if (!form || !lista) return;
+
+        const BASE = form.action;
+        let temporizador = null;
+        let pedido = null;          // AbortController do pedido em curso
+
+        // Carrega uma lista de resultados e substitui a tabela.
+        // historico: 'replace' ao filtrar (não enche o histórico com cada tecla),
+        // 'push' ao paginar (o botão "anterior" do browser volta à página certa).
+        async function carregar(url, { historico = 'replace' } = {}) {
+            pedido?.abort();        // um resultado antigo nunca pode chegar depois do novo
+            pedido = new AbortController();
+
+            spinner.classList.remove('d-none');
+            lista.style.opacity = '.5';
+
+            try {
+                const r = await fetch(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    signal: pedido.signal,
+                });
+                if (!r.ok) throw new Error(r.status);
+
+                lista.innerHTML = await r.text();
+                if (historico === 'push')    history.pushState(null, '', url);
+                if (historico === 'replace') history.replaceState(null, '', url);
+            } catch (e) {
+                if (e.name !== 'AbortError') {
+                    lista.innerHTML = '<div class="alert alert-danger mb-0">'
+                        + 'Não foi possível carregar os produtos. Actualize a página.</div>';
+                }
+            } finally {
+                spinner.classList.add('d-none');
+                lista.style.opacity = '';
+            }
+        }
+
+        // URL com os filtros actuais (a página volta sempre à primeira).
+        function urlFiltros() {
+            const dados = new URLSearchParams(new FormData(form));
+            for (const [k, v] of [...dados]) {
+                if (v === '') dados.delete(k);
+            }
+            const qs = dados.toString();
+            return BASE + (qs ? '?' + qs : '');
+        }
+
+        // Escrever espera 300 ms; mudar um select aplica logo.
+        busca.addEventListener('input', () => {
+            clearTimeout(temporizador);
+            temporizador = setTimeout(() => carregar(urlFiltros()), 300);
+        });
+        form.querySelectorAll('select').forEach((s) => {
+            s.addEventListener('change', () => carregar(urlFiltros()));
+        });
+
+        // Sem JavaScript o formulário faz GET normal; com ele, não recarrega a página.
+        form.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            clearTimeout(temporizador);
+            carregar(urlFiltros());
+        });
+
+        // Esc limpa a pesquisa.
+        busca.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Escape' && busca.value !== '') {
+                busca.value = '';
+                carregar(urlFiltros());
+            }
+        });
+
+        // A paginação vem dentro do HTML substituído — daí a delegação.
+        lista.addEventListener('click', (ev) => {
+            const link = ev.target.closest('.pagination a.page-link');
+            if (!link || link.closest('.disabled')) return;
+            ev.preventDefault();
+            carregar(link.href, { historico: 'push' });
+            lista.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Botões "anterior/seguinte" do browser.
+        window.addEventListener('popstate', () => carregar(location.href, { historico: false }));
+    })();
+</script>
 
 <?php require __DIR__ . '/../partials/admin_footer.php'; ?>

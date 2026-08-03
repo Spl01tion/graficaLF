@@ -58,6 +58,18 @@ if (isset($_GET['run'])) {
     }
 }
 
+// Substituição do catálogo: apaga categorias e produtos e insere a
+// lista real do cliente (database/catalogo.php).
+if (isset($_GET['catalogo'])) {
+    try {
+        require BASE_PATH . '/database/seed_catalogo.php';
+        $relatorio = executar_catalogo();
+        $executado = true;
+    } catch (Throwable $e) {
+        $erro = $e->getMessage();
+    }
+}
+
 // Tabelas existentes (para mostrar o estado actual).
 $tabelas = [];
 try {
@@ -103,9 +115,13 @@ try {
                     <li class="list-group-item text-muted">Nada de novo — os dados já existiam (execução idempotente).</li>
                 <?php else: ?>
                     <?php foreach ($relatorio as $tabela => $n): ?>
-                        <li class="list-group-item d-flex justify-content-between">
+                        <li class="list-group-item d-flex justify-content-between gap-3">
                             <span><?= e($tabela) ?></span>
-                            <span class="badge bg-primary rounded-pill"><?= (int) $n ?></span>
+                            <?php if (is_int($n)): ?>
+                                <span class="badge bg-primary rounded-pill"><?= $n ?></span>
+                            <?php else: ?>
+                                <span class="text-muted small text-end"><?= e($n) ?></span>
+                            <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -143,7 +159,16 @@ try {
                onclick="return confirm('Isto APAGA todas as tabelas e reinstala de raiz. Continuar?');">
                 <i class="bi bi-trash me-1"></i>Reinstalar de raiz (apaga tudo)
             </a>
+            <a href="<?= url('setup?catalogo=1') ?>" class="btn btn-outline-primary"
+               onclick="return confirm('Isto APAGA todas as categorias e produtos actuais e insere o catálogo de database/catalogo.php. Continuar?');">
+                <i class="bi bi-box-seam me-1"></i>Substituir catálogo (categorias + produtos)
+            </a>
         </div>
+        <p class="text-muted small mt-3 mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            &ldquo;Substituir catálogo&rdquo; não mexe em utilizadores, pedidos, cupões nem definições —
+            apaga só as categorias e os produtos e insere a lista de <code>database/catalogo.php</code>.
+        </p>
     <?php endif; ?>
 </div>
 </body>

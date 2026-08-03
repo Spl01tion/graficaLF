@@ -9,7 +9,7 @@ $descricao = 'Conheça a Gráfica Lifei — a sua parceira de impressão e desig
 require __DIR__ . '/partials/header.php';
 ?>
 
-<section class="py-5 bg-dark-blue text-white">
+<section class="page-header text-white py-5">
     <div class="container py-4 text-center">
         <h1 class="fw-bold mb-2">Sobre a Gráfica Lifei</h1>
         <p class="text-white-50 mb-0">Criatividade e qualidade ao serviço da sua marca.</p>

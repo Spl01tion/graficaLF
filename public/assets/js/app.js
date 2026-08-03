@@ -38,6 +38,53 @@ document.addEventListener('DOMContentLoaded', () => {
         alvos.forEach((el) => obs.observe(el));
     }
 
+    // ---- Contadores animados (faixa de números da homepage) ----
+    const contadores = document.querySelectorAll('[data-contador]');
+    if (contadores.length) {
+        const semAnimacao = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const contar = (el) => {
+            const alvo = parseInt(el.dataset.contador, 10) || 0;
+            if (semAnimacao) { el.textContent = alvo.toLocaleString('pt-PT'); return; }
+
+            const duracao = 1600;
+            const inicio = performance.now();
+            const passo = (agora) => {
+                const p = Math.min((agora - inicio) / duracao, 1);
+                // easing "ease-out" — trava perto do fim, fica mais natural.
+                const valor = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+                el.textContent = valor.toLocaleString('pt-PT');
+                if (p < 1) requestAnimationFrame(passo);
+            };
+            requestAnimationFrame(passo);
+        };
+
+        const obsNum = new IntersectionObserver((entradas) => {
+            entradas.forEach((e) => {
+                if (e.isIntersecting) { contar(e.target); obsNum.unobserve(e.target); }
+            });
+        }, { threshold: 0.5 });
+        contadores.forEach((el) => obsNum.observe(el));
+    }
+
+    // ---- Copiar código de cupão ----
+    document.body.addEventListener('click', async (ev) => {
+        const btn = ev.target.closest('[data-copiar]');
+        if (!btn) return;
+
+        try {
+            await navigator.clipboard.writeText(btn.dataset.copiar);
+            toast('Código copiado: ' + btn.dataset.copiar, 'dark');
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = 'bi bi-check2 ms-2';
+                setTimeout(() => { icon.className = 'bi bi-clipboard ms-2'; }, 2000);
+            }
+        } catch (e) {
+            toast('Não foi possível copiar. Código: ' + btn.dataset.copiar, 'danger');
+        }
+    });
+
     // Mostra um toast dinâmico.
     function toast(mensagem, tipo = 'dark') {
         let cont = document.querySelector('.toast-container');
@@ -139,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setBadge('wishlist', j.contador);
             const icon = btn.querySelector('i');
             btn.classList.toggle('ativo', j.adicionado);
+            btn.setAttribute('aria-pressed', j.adicionado ? 'true' : 'false');
             icon.className = j.adicionado ? 'bi bi-heart-fill text-primary' : 'bi bi-heart';
             toast(j.adicionado ? 'Adicionado aos favoritos.' : 'Removido dos favoritos.', 'dark');
         }

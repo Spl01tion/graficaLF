@@ -41,10 +41,11 @@ require __DIR__ . '/partials/header.php';
         <h1 class="h3 fw-bold mb-4"><i class="bi bi-heart me-2"></i>Lista de desejos</h1>
 
         <?php if ($produtos === []): ?>
-            <div class="text-center py-5">
-                <i class="bi bi-heart display-4 text-muted"></i>
-                <p class="text-muted mt-3">Ainda não guardou nenhum produto.</p>
-                <a href="<?= url('shop') ?>" class="btn btn-primary">Explorar produtos</a>
+            <div class="estado-vazio">
+                <div class="estado-vazio__icone mb-4"><i class="bi bi-heart"></i></div>
+                <h2 class="h4 fw-bold mb-2">Ainda não guardou nenhum produto</h2>
+                <p class="text-muted mb-4">Toque no coração de um produto para o guardar aqui.</p>
+                <a href="<?= url('shop') ?>" class="btn btn-primary px-4"><i class="bi bi-bag me-1"></i>Explorar produtos</a>
             </div>
         <?php else: ?>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">

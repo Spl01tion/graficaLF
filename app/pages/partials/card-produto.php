@@ -13,8 +13,8 @@ $temPromo = ! empty($produto['preco_promo']) && (float) $produto['preco_promo'] 
 $naWishlist = wishlist_tem((int) $produto['id_product']);
 ?>
 <div class="card h-100 border-0 shadow-sm card-produto">
-    <div class="position-relative overflow-hidden" style="aspect-ratio: 4/3;">
-        <a href="<?= url('shop/' . $produto['slug']) ?>">
+    <div class="position-relative overflow-hidden card-img-wrap" style="aspect-ratio: 4/3;">
+        <a href="<?= url('shop/' . $produto['slug']) ?>" tabindex="-1" aria-hidden="true">
             <img src="<?= e(imagem_url($imagemProduto)) ?>" alt="<?= e($produto['nome']) ?>"
                  class="w-100 h-100 object-fit-cover" loading="lazy">
         </a>
@@ -26,7 +26,9 @@ $naWishlist = wishlist_tem((int) $produto['id_product']);
         <!-- Botão wishlist -->
         <button type="button"
                 class="btn btn-light btn-sm rounded-circle position-absolute top-0 end-0 m-2 btn-wishlist <?= $naWishlist ? 'ativo' : '' ?>"
-                data-produto="<?= (int) $produto['id_product'] ?>" title="Adicionar aos favoritos">
+                data-produto="<?= (int) $produto['id_product'] ?>"
+                aria-pressed="<?= $naWishlist ? 'true' : 'false' ?>"
+                aria-label="<?= $naWishlist ? 'Remover' : 'Adicionar' ?> <?= e($produto['nome']) ?> dos favoritos">
             <i class="bi <?= $naWishlist ? 'bi-heart-fill text-primary' : 'bi-heart' ?>"></i>
         </button>
     </div>
@@ -49,8 +51,9 @@ $naWishlist = wishlist_tem((int) $produto['id_product']);
                 <?php endif; ?>
             </div>
             <button type="button" class="btn btn-sm btn-primary btn-add-carrinho"
-                    data-produto="<?= (int) $produto['id_product'] ?>" title="Adicionar ao carrinho">
-                <i class="bi bi-bag-plus"></i>
+                    data-produto="<?= (int) $produto['id_product'] ?>"
+                    aria-label="Adicionar <?= e($produto['nome']) ?> ao carrinho">
+                <i class="bi bi-bag-plus" aria-hidden="true"></i>
             </button>
         </div>
     </div>

@@ -75,20 +75,26 @@ $flash     = get_flash();
 
 <body>
 
+    <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
     <!-- ============ TOP STRIP ============ -->
     <div class="top-strip text-white">
         <div class="container d-flex flex-wrap justify-content-center justify-content-md-between align-items-center gap-2 py-2 small">
             <div class="d-none d-md-flex align-items-center gap-3">
-                <span><i class="bi bi-telephone-fill me-1"></i><?= e(config_get('site_phone', '+258 84 000 0000')) ?></span>
-                <span><i class="bi bi-envelope-fill me-1"></i><?= e(config_get('site_email', 'geral@graficalifei.co.mz')) ?></span>
+                <a href="tel:<?= e(preg_replace('/\s+/', '', config_get('site_phone', '+258840000000'))) ?>" class="text-white text-decoration-none">
+                    <i class="bi bi-telephone-fill me-1"></i><?= e(config_get('site_phone', '+258 84 000 0000')) ?>
+                </a>
+                <a href="mailto:<?= e(config_get('site_email', 'geral@graficalifei.co.mz')) ?>" class="text-white text-decoration-none">
+                    <i class="bi bi-envelope-fill me-1"></i><?= e(config_get('site_email', 'geral@graficalifei.co.mz')) ?>
+                </a>
             </div>
             <div class="text-center fw-semibold">
                 <i class="bi bi-truck me-1"></i>Entrega grátis em Maputo para pedidos acima de <?= e(moeda(5000)) ?>
             </div>
             <div class="d-none d-md-flex align-items-center gap-2">
-                <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="text-white" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
             </div>
         </div>
     </div>
@@ -182,4 +188,4 @@ $flash     = get_flash();
         </div>
     <?php endif; ?>
 
-    <main>
+    <main id="conteudo">

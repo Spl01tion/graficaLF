@@ -386,10 +386,11 @@ require __DIR__ . '/partials/header.php';
                 </div>
 
                 <?php if ($produtos === []): ?>
-                    <div class="text-center py-5">
-                        <i class="bi bi-search display-4 text-muted"></i>
-                        <p class="text-muted mt-3">Nenhum produto encontrado com estes filtros.</p>
-                        <a href="<?= url('shop') ?>" class="btn btn-outline-primary">Limpar filtros</a>
+                    <div class="estado-vazio">
+                        <div class="estado-vazio__icone mb-4"><i class="bi bi-search"></i></div>
+                        <h2 class="h5 fw-bold mb-2">Nenhum produto encontrado</h2>
+                        <p class="text-muted mb-4">Experimente outros termos de pesquisa ou remova alguns filtros.</p>
+                        <a href="<?= url('shop') ?>" class="btn btn-outline-primary px-4">Limpar filtros</a>
                     </div>
                 <?php else: ?>
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
@@ -400,20 +401,41 @@ require __DIR__ . '/partials/header.php';
 
                     <!-- Paginação -->
                     <?php if ($totalPaginas > 1): ?>
-                        <nav class="mt-5">
-                            <ul class="pagination justify-content-center">
+                        <?php
+                        // Link de uma página, mantendo os filtros activos.
+                        $linkPagina = static function (int $n): string {
+                            $base = shop_link([]);
+                            return $base . (str_contains($base, '?') ? '&' : '?') . 'page=' . $n;
+                        };
+                        ?>
+                        <nav class="mt-5" aria-label="Navegação de páginas">
+                            <ul class="pagination justify-content-center flex-wrap">
                                 <li class="page-item <?= $pagina <= 1 ? 'disabled' : '' ?>">
-                                    <a class="page-link" href="<?= shop_link([]) . (str_contains(shop_link([]), '?') ? '&' : '?') . 'page=' . ($pagina - 1) ?>">Anterior</a>
+                                    <a class="page-link" href="<?= $linkPagina(max(1, $pagina - 1)) ?>" aria-label="Página anterior">
+                                        <i class="bi bi-chevron-left"></i><span class="d-none d-sm-inline ms-1">Anterior</span>
+                                    </a>
                                 </li>
-                                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                                    <li class="page-item <?= $i === $pagina ? 'active' : '' ?>">
-                                        <a class="page-link" href="<?= shop_link([]) . (str_contains(shop_link([]), '?') ? '&' : '?') . 'page=' . $i ?>"><?= $i ?></a>
-                                    </li>
-                                <?php endfor; ?>
+
+                                <?php foreach (paginacao_numeros($pagina, $totalPaginas) as $n): ?>
+                                    <?php if ($n === '…'): ?>
+                                        <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                                    <?php else: ?>
+                                        <li class="page-item <?= $n === $pagina ? 'active' : '' ?>">
+                                            <a class="page-link" href="<?= $linkPagina($n) ?>"
+                                               <?= $n === $pagina ? 'aria-current="page"' : '' ?>><?= $n ?></a>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
                                 <li class="page-item <?= $pagina >= $totalPaginas ? 'disabled' : '' ?>">
-                                    <a class="page-link" href="<?= shop_link([]) . (str_contains(shop_link([]), '?') ? '&' : '?') . 'page=' . ($pagina + 1) ?>">Seguinte</a>
+                                    <a class="page-link" href="<?= $linkPagina(min($totalPaginas, $pagina + 1)) ?>" aria-label="Página seguinte">
+                                        <span class="d-none d-sm-inline me-1">Seguinte</span><i class="bi bi-chevron-right"></i>
+                                    </a>
                                 </li>
                             </ul>
+                            <p class="text-center text-muted small mb-0">
+                                Página <?= $pagina ?> de <?= $totalPaginas ?> &middot; <?= $total ?> produto(s)
+                            </p>
                         </nav>
                     <?php endif; ?>
                 <?php endif; ?>

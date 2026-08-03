@@ -121,10 +121,10 @@ require __DIR__ . '/partials/header.php';
                         <!-- Objetos flutuantes (mockups) — mesma disposição, novos produtos -->
                         <div class="col-lg-6 d-none d-lg-block">
                             <div class="hero-mockups">
-                                <img src="<?= asset('img/mockups/bandeira.webp') ?>" class="flutua d2" alt="Bandeira personalizada" style="width:58%; top:0; left:0; transform:rotate(0deg); z-index:1;">
-                                <img src="<?= asset('img/mockups/banner.webp') ?>" class="flutua d1" alt="Banner personalizado" style="width:100%; top:5%; right:-20%; transform:rotate(0deg); z-index:2;">
+                                <img src="<?= asset('img/mockups/bandeira.webp') ?>" class="flutua d2" alt="Bandeira personalizada" style="width:58%; top:0; left:0; transform:rotate(0deg); z-index:2;">
+                                <img src="<?= asset('img/mockups/banner.webp') ?>" class="flutua d1" alt="Banner personalizado" style="width:100%; top:5%; right:-20%; transform:rotate(0deg); z-index:1;">
                                 <img src="<?= asset('img/mockups/bookcatalogs.webp') ?>" class="flutua d3" alt="Catálogo personalizado" style="width:54%; bottom:0; left:-5%; transform:rotate(0deg); z-index:4;">
-                                <img src="<?= asset('img/mockups/rollup.webp') ?>" class="flutua d2" alt="Roll-up personalizado" style="width:52%; bottom:6%; right:12%; transform:rotate(0deg); z-index:3;">
+                                <img src="<?= asset('img/mockups/rollup.webp') ?>" class="flutua d2" alt="Roll-up personalizado" style="width:72%; bottom:5%; right:4%; transform:rotate(0deg); z-index:3;">
                             </div>
                         </div>
                     </div>
@@ -393,7 +393,9 @@ require __DIR__ . '/partials/header.php';
                             <div class="text-warning mb-3" aria-label="5 em 5 estrelas">
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
-                            <blockquote class="mb-4"><p class="mb-0"><?= e($t['texto']) ?></p></blockquote>
+                            <blockquote class="mb-4">
+                                <p class="mb-0"><?= e($t['texto']) ?></p>
+                            </blockquote>
                             <figcaption class="d-flex align-items-center gap-3 mt-auto">
                                 <span class="avatar-inicial"><?= e(mb_substr($t['nome'], 0, 1)) ?></span>
                                 <div>

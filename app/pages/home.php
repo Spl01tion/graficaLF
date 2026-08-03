@@ -18,8 +18,28 @@ $maisVendidos = query(
      LIMIT 8'
 ) ?: [];
 
-// Categorias para a barra de navegação rápida.
-$categorias = query('SELECT * FROM categories ORDER BY nome') ?: [];
+// Categorias (com o nº de produtos activos) para o mosaico de navegação.
+$categorias = query(
+    'SELECT c.*,
+            (SELECT COUNT(*) FROM products p
+              WHERE p.id_category = c.id_category AND p.ativo = 1) AS n
+     FROM categories c
+     ORDER BY c.nome
+     LIMIT 8'
+) ?: [];
+
+// Imagens do mosaico de categorias (assets/img/catCards). A chave é o slug
+// da categoria; se não houver correspondência usa-se a imagem da BD.
+$catCards = [
+    'papelaria-personalizada'     => 'Papelaria_Personalizada.webp',
+    'adesivos-rotulos-etiquetas'  => 'Adesivos_Rotulos_Etiquetas.webp',
+    'flyers-panfletos-folders'    => 'Flyers_Panfletos_Folders.webp',
+    'embalagens-sacolas'          => 'Embalagens_Sacolas.webp',
+    'brindes-presentes-decoracao' => 'Brindes_Presentes_Decoracao.webp',
+    'agendas-calendarios'         => 'Agendas_Calendarios.webp',
+    'banners-faixas-placas'       => 'Banners_Faixas_Placas.webp',
+    'catalogos-livros-revistas'   => 'Catalogos_Livros_Revistas.webp',
+];
 
 $titulo    = 'Impressão e Design Gráfico em Moçambique';
 $descricao = 'Gráfica Lifei — impressão de qualidade em Maputo: cartões de visita, banners, t-shirts, stickers, catálogos e serviços de design.';
@@ -129,6 +149,73 @@ require __DIR__ . '/partials/header.php';
     </div>
 </section>
 
+<!-- ============ FAIXA DE CONFIANÇA (sobrepõe o hero) ============ -->
+<div class="container faixa-confianca">
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-0">
+            <div class="row g-0 text-center text-md-start">
+                <?php
+                $garantias = [
+                    ['icon' => 'bi-truck',          'titulo' => 'Entrega em 48h',      'texto' => 'Em Maputo e arredores'],
+                    ['icon' => 'bi-brush',          'titulo' => 'Design incluído',     'texto' => 'A nossa equipa trata da arte'],
+                    ['icon' => 'bi-chat-square-text', 'titulo' => 'Orçamento grátis',  'texto' => 'Resposta em poucas horas'],
+                    ['icon' => 'bi-patch-check',    'titulo' => 'Qualidade garantida', 'texto' => 'Prova antes de imprimir'],
+                ];
+                foreach ($garantias as $g): ?>
+                    <div class="col-6 col-lg-3 faixa-confianca__item">
+                        <div class="d-flex flex-column flex-md-row align-items-center gap-md-3 p-4">
+                            <i class="bi <?= $g['icon'] ?> fs-2 text-primary mb-2 mb-md-0"></i>
+                            <div>
+                                <div class="fw-bold small"><?= e($g['titulo']) ?></div>
+                                <div class="text-muted small"><?= e($g['texto']) ?></div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MOSAICO DE CATEGORIAS ============ -->
+<?php if ($categorias): ?>
+    <section class="py-5">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-end mb-4" data-revelar>
+                <div>
+                    <span class="etiqueta-seccao">Catálogo</span>
+                    <h2 class="fw-bold mb-1 mt-2">Explore por categoria</h2>
+                    <p class="text-muted mb-0">Escolha o que quer imprimir e nós tratamos do resto.</p>
+                </div>
+                <a href="<?= url('shop') ?>" class="btn btn-outline-primary d-none d-sm-inline-block">Ver a loja</a>
+            </div>
+
+            <div class="bento-cat" data-revelar>
+                <?php foreach ($categorias as $c): ?>
+                    <?php
+                    $capa = isset($catCards[$c['slug']])
+                        ? asset('img/catCards/' . $catCards[$c['slug']])
+                        : imagem_url($c['image']);
+                    ?>
+                    <a class="cat-tile" href="<?= url('shop') ?>?categoria=<?= urlencode($c['slug']) ?>">
+                        <img src="<?= e($capa) ?>" alt="<?= e($c['nome']) ?>" loading="lazy">
+                        <div class="cat-tile__conteudo">
+                            <span class="cat-tile__contador"><?= (int) $c['n'] ?> produto<?= (int) $c['n'] === 1 ? '' : 's' ?></span>
+                            <h3 class="cat-tile__titulo"><?= e($c['nome']) ?></h3>
+                            <p class="cat-tile__texto"><?= e($c['descricao'] ?? '') ?></p>
+                        </div>
+                        <span class="cat-tile__seta"><i class="bi bi-arrow-right"></i></span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="text-center mt-4 d-sm-none">
+                <a href="<?= url('shop') ?>" class="btn btn-outline-primary">Ver a loja</a>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
 <!-- ============ SECÇÃO 1 — Como concretizar as suas ideias ============ -->
 <section class="py-5">
     <div class="container py-4">
@@ -169,6 +256,29 @@ require __DIR__ . '/partials/header.php';
         <?php endfor; ?>
     </div>
 </div>
+
+<!-- ============ NÚMEROS (contadores animados) ============ -->
+<section class="faixa-numeros text-white py-5">
+    <div class="container py-4">
+        <div class="row g-4 text-center">
+            <?php
+            $numeros = [
+                ['valor' => 10,   'sufixo' => '+',  'rotulo' => 'Anos de experiência'],
+                ['valor' => 5000, 'sufixo' => '+',  'rotulo' => 'Trabalhos impressos'],
+                ['valor' => 1200, 'sufixo' => '+',  'rotulo' => 'Clientes satisfeitos'],
+                ['valor' => 48,   'sufixo' => 'h',  'rotulo' => 'Prazo médio de entrega'],
+            ];
+            foreach ($numeros as $n): ?>
+                <div class="col-6 col-lg-3" data-revelar>
+                    <div class="numero-grande">
+                        <span data-contador="<?= (int) $n['valor'] ?>">0</span><?= e($n['sufixo']) ?>
+                    </div>
+                    <div class="text-white-50 small text-uppercase" style="letter-spacing:.08em;"><?= e($n['rotulo']) ?></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
 
 <!-- ============ SECÇÃO 2 — Motivos / benefícios ============ -->
 <section class="py-5 bg-light">
@@ -255,6 +365,71 @@ require __DIR__ . '/partials/header.php';
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ TESTEMUNHOS ============ -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5" data-revelar>
+            <span class="etiqueta-seccao">Testemunhos</span>
+            <h2 class="fw-bold mt-2 mb-1">O que dizem os nossos clientes</h2>
+            <p class="text-muted mb-0">Marcas moçambicanas que já imprimem connosco.</p>
+        </div>
+        <div class="row g-4">
+            <?php
+            $testemunhos = [
+                ['nome' => 'Anabela Sitoe',  'cargo' => 'Boutique Kanimambo',   'texto' => 'Precisávamos de 500 cartões para uma feira em dois dias. Ficaram prontos a tempo e com uma qualidade acima do que esperávamos.'],
+                ['nome' => 'Jorge Macuácua', 'cargo' => 'Construções JM, Lda.', 'texto' => 'Fizeram o design dos uniformes e dos roll-ups da empresa. Acompanharam tudo até à entrega, sem precisarmos de andar atrás.'],
+                ['nome' => 'Telma Nhaca',    'cargo' => 'Café da Baixa',        'texto' => 'Os menus e os stickers ficaram lindíssimos. Já é a terceira vez que repetimos a encomenda — guardam os ficheiros e é imediato.'],
+            ];
+            foreach ($testemunhos as $t): ?>
+                <div class="col-md-6 col-lg-4" data-revelar>
+                    <figure class="card-testemunho card border-0 shadow-sm h-100 mb-0">
+                        <div class="card-body p-4">
+                            <div class="text-warning mb-3" aria-label="5 em 5 estrelas">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <blockquote class="mb-4"><p class="mb-0"><?= e($t['texto']) ?></p></blockquote>
+                            <figcaption class="d-flex align-items-center gap-3 mt-auto">
+                                <span class="avatar-inicial"><?= e(mb_substr($t['nome'], 0, 1)) ?></span>
+                                <div>
+                                    <div class="fw-bold small"><?= e($t['nome']) ?></div>
+                                    <div class="text-muted small"><?= e($t['cargo']) ?></div>
+                                </div>
+                            </figcaption>
+                        </div>
+                    </figure>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FAIXA DE CAMPANHA ============ -->
+<section class="py-5">
+    <div class="container py-2">
+        <div class="faixa-campanha text-white p-4 p-lg-5" data-revelar>
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
+                        <i class="bi bi-gift-fill me-1"></i>Primeira encomenda
+                    </span>
+                    <h2 class="fw-bold mb-2">10% de desconto no seu primeiro pedido</h2>
+                    <p class="mb-0 text-white-50">
+                        Use o código abaixo ao finalizar a encomenda ou mencione-o quando pedir o orçamento.
+                    </p>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <button type="button" class="cupao-codigo" data-copiar="LIFEI10">
+                        <span>LIFEI10</span><i class="bi bi-clipboard ms-2"></i>
+                    </button>
+                    <div class="mt-3">
+                        <a href="<?= url('shop') ?>" class="btn btn-light btn-lg px-4">Começar a encomendar</a>
+                    </div>
                 </div>
             </div>
         </div>

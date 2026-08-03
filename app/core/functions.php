@@ -578,6 +578,24 @@ function apagar_upload(?string $nome): void
 /** Converte texto em slug para URL: "Cartões 350g" -> "cartoes-350g". */
 function str_to_url(string $texto): string
 {
+    // O iconv//TRANSLIT depende da biblioteca do sistema: no Windows devolve
+    // "Cart~oes" em vez de "Cartoes". Os acentos do português são traduzidos
+    // aqui, para o slug ser igual em qualquer servidor.
+    $texto = strtr($texto, [
+        'á' => 'a', 'à' => 'a', 'ã' => 'a', 'â' => 'a', 'ä' => 'a',
+        'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+        'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'õ' => 'o', 'ô' => 'o', 'ö' => 'o',
+        'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+        'ç' => 'c', 'ñ' => 'n',
+        'Á' => 'A', 'À' => 'A', 'Ã' => 'A', 'Â' => 'A', 'Ä' => 'A',
+        'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+        'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I',
+        'Ó' => 'O', 'Ò' => 'O', 'Õ' => 'O', 'Ô' => 'O', 'Ö' => 'O',
+        'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U',
+        'Ç' => 'C', 'Ñ' => 'N',
+    ]);
+
     $texto = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $texto) ?: $texto;
     $texto = strtolower($texto);
     $texto = preg_replace('/[^a-z0-9]+/', '-', $texto) ?? '';
@@ -655,6 +673,48 @@ function get_pagination_vars(): array
         'prev_link'   => $prev_link,
         'first_link'  => $first_link,
     ];
+}
+
+/**
+ * Números a mostrar numa barra de paginação, sem os listar todos.
+ * Devolve sempre a primeira e a última página, mais uma janela à volta
+ * da página actual; os saltos são marcados com reticências.
+ *
+ * Ex.: pagina 12 de 63  ->  [1, '…', 10, 11, 12, 13, 14, '…', 63]
+ *
+ * @return list<int|string>
+ */
+function paginacao_numeros(int $pagina, int $totalPaginas, int $janela = 2): array
+{
+    if ($totalPaginas < 1) {
+        return [];
+    }
+
+    $numeros = [1, $totalPaginas];
+    for ($i = $pagina - $janela; $i <= $pagina + $janela; $i++) {
+        if ($i >= 1 && $i <= $totalPaginas) {
+            $numeros[] = $i;
+        }
+    }
+
+    $numeros = array_unique($numeros);
+    sort($numeros);
+
+    $saida    = [];
+    $anterior = 0;
+    foreach ($numeros as $n) {
+        // Um salto de duas ou mais páginas vira reticências; um salto de
+        // uma só mostra o número que falta (fica mais limpo do que "…").
+        if ($anterior > 0 && $n - $anterior === 2) {
+            $saida[] = $anterior + 1;
+        } elseif ($anterior > 0 && $n - $anterior > 2) {
+            $saida[] = '…';
+        }
+        $saida[]  = $n;
+        $anterior = $n;
+    }
+
+    return $saida;
 }
 
 /**

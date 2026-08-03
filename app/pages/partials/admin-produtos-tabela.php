@@ -6,13 +6,16 @@
  * Renderizado nas duas situações: no carregamento normal da página e na
  * resposta AJAX da pesquisa dinâmica (é por isso que vive num parcial).
  *
- * Variáveis esperadas:
- *   $produtos      array  linhas da página actual
- *   $total         int    total de resultados (todos os filtros aplicados)
- *   $pagina        int    página actual
- *   $totalPaginas  int
- *   $filtros       array  q / categoria / estado — para os links da paginação
+ * Variáveis esperadas — injectadas por parcial() via extract(); as
+ * anotações @var declaram-nas ao analisador do editor, que de outra
+ * forma as assinala como indefinidas neste ficheiro.
  */
+
+/** @var array<int,array<string,mixed>> $produtos     Linhas da página actual. */
+/** @var int                            $total        Total de resultados (com os filtros aplicados). */
+/** @var int                            $pagina       Página actual. */
+/** @var int                            $totalPaginas Número total de páginas. */
+/** @var array<string,mixed>            $filtros      q / categoria / estado — para os links da paginação. */
 
 $linkPagina = static function (int $n) use ($filtros): string {
     $q = array_filter($filtros, static fn ($v) => $v !== '' && $v !== null);

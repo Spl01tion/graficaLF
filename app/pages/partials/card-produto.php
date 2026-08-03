@@ -3,10 +3,12 @@
 /**
  * card-produto.php — Cartão de produto (reutilizado na home e na loja).
  *
- * Espera:
- *   $produto  array com id_product, nome, slug, preco, preco_promo,
- *             descricao_curta e (opcional) 'imagem'
+ * Espera $produto — injectado por parcial() via extract(). A anotação
+ * @var declara-o ao analisador do editor, que de outra forma o assinala
+ * como indefinido neste ficheiro.
  */
+
+/** @var array<string,mixed> $produto  id_product, nome, slug, preco, preco_promo, descricao_curta e (opcional) 'imagem'. */
 
 $imagemProduto = $produto['imagem'] ?? null;
 $temPromo = ! empty($produto['preco_promo']) && (float) $produto['preco_promo'] < (float) $produto['preco'];

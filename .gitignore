@@ -15,6 +15,9 @@
 /storage/logs/*
 !/storage/logs/.gitkeep
 
+# Cópias de segurança da base de dados
+/storage/backups/
+
 # Sistema operativo / IDE
 Thumbs.db
 .DS_Store

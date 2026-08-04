@@ -61,7 +61,7 @@ require __DIR__ . '/partials/header.php';
                     <div class="row align-items-center g-5">
                         <div class="col-lg-6">
                             <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
-                                <i class="bi bi-star-fill me-1"></i>DeployImpressão &amp; Design em Maputo
+                                <i class="bi bi-star-fill me-1"></i>Impressão &amp; Design em Maputo
                             </span>
                             <h1 class="display-3 fw-bold mb-3" data-revelar>
                                 Damos vida às suas <span class="text-warning">ideias</span> impressas

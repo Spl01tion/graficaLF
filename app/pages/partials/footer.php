@@ -62,8 +62,13 @@
             </div>
 
             <hr class="border-white-50 my-4">
-            <div class="text-center small text-white-50">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 small text-white-50">
                 <span>&copy; <?= date('Y') ?> <?= e(APP_NAME) ?>. Todos os direitos reservados.</span>
+                <nav class="footer-legal" aria-label="Informação legal">
+                    <a href="<?= url('termos') ?>">Termos &amp; Condições</a>
+                    <a href="<?= url('privacidade') ?>">Política de Privacidade</a>
+                    <a href="<?= url('seguranca') ?>">Segurança</a>
+                </nav>
             </div>
         </div>
     </footer>

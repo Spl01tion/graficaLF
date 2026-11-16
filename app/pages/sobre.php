@@ -20,8 +20,8 @@ require __DIR__ . '/partials/header.php';
     <div class="container py-4">
         <div class="row align-items-center g-5">
             <div class="col-lg-6" data-revelar>
-                <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80"
-                     alt="Equipa Gráfica Lifei" class="img-fluid rounded-4 shadow-sm">
+                <img src="assets/img/sobre.png"
+                    alt="Equipa Gráfica Lifei" class="img-fluid rounded-4 shadow-sm">
             </div>
             <div class="col-lg-6" data-revelar>
                 <h2 class="fw-bold mb-3">Quem somos</h2>

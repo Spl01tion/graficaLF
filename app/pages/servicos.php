@@ -54,7 +54,7 @@ $servicos = [
         'slug'   => 'design',
         'titulo' => 'Serviços de Design',
         'texto'  => 'A nossa equipa criativa desenvolve a sua arte: logótipos, identidade visual, layouts para impressão e materiais promocionais.',
-        'img'    => 'https://images.unsplash.com/photo-1524234107056-1c1f48f64ab8?w=700&q=80',
+        'img'    => 'https://images.unsplash.com/photo-1611241893603-3c359704e0ee?q=80',
         'icon'   => 'bi-palette',
         'prazo'  => '2 a 7 dias',
         'inclui' => [
@@ -144,7 +144,7 @@ require __DIR__ . '/partials/header.php';
     <div class="container py-4">
         <?php foreach ($servicos as $i => $s): ?>
             <div class="row servico-bloco align-items-center g-4 g-lg-5 mb-5 pb-lg-4 flex-lg-row<?= $i % 2 ? '-reverse' : '' ?>"
-                 id="<?= e($s['slug']) ?>" data-revelar>
+                id="<?= e($s['slug']) ?>" data-revelar>
                 <div class="col-lg-6">
                     <div class="servico-moldura">
                         <img src="<?= e($s['img']) ?>" alt="<?= e($s['titulo']) ?>" class="servico-img shadow-sm" loading="lazy">
@@ -304,25 +304,37 @@ require __DIR__ . '/partials/header.php';
                 <div class="accordion accordion-flush accordion-faq" id="faqServicos">
                     <?php
                     $faq = [
-                        ['p' => 'Em que formato devo enviar os meus ficheiros?',
-                         'r' => 'O ideal é PDF em alta resolução (300 dpi) com 3 mm de sangria e as fontes convertidas em curvas. Também aceitamos AI, PSD, CDR e JPG — se o ficheiro tiver algum problema, avisamos antes de imprimir.'],
-                        ['p' => 'E se eu não tiver nenhuma arte pronta?',
-                         'r' => 'Sem problema. A nossa equipa de design cria a arte a partir da sua ideia, do seu logótipo ou até de um simples rascunho. O design está incluído na maioria dos serviços.'],
-                        ['p' => 'Qual é a quantidade mínima de encomenda?',
-                         'r' => 'Depende do produto. Em impressão digital fazemos a partir de uma unidade; em offset compensa a partir de 500 unidades. Dizemos sempre qual a opção mais económica para a sua tiragem.'],
-                        ['p' => 'Quanto tempo demora um trabalho?',
-                         'r' => 'A maioria dos trabalhos de impressão fica pronta em 24 a 48 horas após a aprovação da prova. Grandes formatos e acabamentos especiais podem levar 3 a 5 dias.'],
-                        ['p' => 'Fazem entregas fora de Maputo?',
-                         'r' => 'Sim. Entregamos em Maputo e Matola e enviamos para as restantes províncias através de transportadora, com o custo indicado no orçamento.'],
-                        ['p' => 'Como funciona o pagamento?',
-                         'r' => 'Trabalhamos com transferência bancária, M-Pesa e numerário. Em encomendas grandes pedimos 50% no início e o restante na entrega.'],
+                        [
+                            'p' => 'Em que formato devo enviar os meus ficheiros?',
+                            'r' => 'O ideal é PDF em alta resolução (300 dpi) com 3 mm de sangria e as fontes convertidas em curvas. Também aceitamos AI, PSD, CDR e JPG — se o ficheiro tiver algum problema, avisamos antes de imprimir.'
+                        ],
+                        [
+                            'p' => 'E se eu não tiver nenhuma arte pronta?',
+                            'r' => 'Sem problema. A nossa equipa de design cria a arte a partir da sua ideia, do seu logótipo ou até de um simples rascunho. O design está incluído na maioria dos serviços.'
+                        ],
+                        [
+                            'p' => 'Qual é a quantidade mínima de encomenda?',
+                            'r' => 'Depende do produto. Em impressão digital fazemos a partir de uma unidade; em offset compensa a partir de 500 unidades. Dizemos sempre qual a opção mais económica para a sua tiragem.'
+                        ],
+                        [
+                            'p' => 'Quanto tempo demora um trabalho?',
+                            'r' => 'A maioria dos trabalhos de impressão fica pronta em 24 a 48 horas após a aprovação da prova. Grandes formatos e acabamentos especiais podem levar 3 a 5 dias.'
+                        ],
+                        [
+                            'p' => 'Fazem entregas fora de Maputo?',
+                            'r' => 'Sim. Entregamos em Maputo e Matola e enviamos para as restantes províncias através de transportadora, com o custo indicado no orçamento.'
+                        ],
+                        [
+                            'p' => 'Como funciona o pagamento?',
+                            'r' => 'Trabalhamos com transferência bancária, M-Pesa e numerário. Em encomendas grandes pedimos 50% no início e o restante na entrega.'
+                        ],
                     ];
                     foreach ($faq as $i => $f): ?>
                         <div class="accordion-item">
                             <h3 class="accordion-header">
                                 <button class="accordion-button <?= $i === 0 ? '' : 'collapsed' ?>" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#faq<?= $i ?>"
-                                        aria-expanded="<?= $i === 0 ? 'true' : 'false' ?>" aria-controls="faq<?= $i ?>">
+                                    data-bs-toggle="collapse" data-bs-target="#faq<?= $i ?>"
+                                    aria-expanded="<?= $i === 0 ? 'true' : 'false' ?>" aria-controls="faq<?= $i ?>">
                                     <?= e($f['p']) ?>
                                 </button>
                             </h3>
@@ -350,7 +362,7 @@ require __DIR__ . '/partials/header.php';
                     <i class="bi bi-envelope me-1"></i>Pedir orçamento
                 </a>
                 <a href="<?= e(config_get('whatsapp_url', '#')) ?>" class="btn btn-outline-light btn-lg px-4"
-                   target="_blank" rel="noopener">
+                    target="_blank" rel="noopener">
                     <i class="bi bi-whatsapp me-1"></i>Falar por WhatsApp
                 </a>
             </div>

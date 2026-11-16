@@ -10,7 +10,7 @@ header('Content-Type: application/xml; charset=utf-8');
 $urls = [];
 
 // Páginas estáticas.
-foreach (['home' => '1.0', 'shop' => '0.9', 'servicos' => '0.7', 'sobre' => '0.6', 'contacto' => '0.6'] as $p => $prioridade) {
+foreach (['home' => '1.0', 'shop' => '0.9', 'servicos' => '0.7', 'sobre' => '0.6', 'contacto' => '0.6', 'termos' => '0.3', 'privacidade' => '0.3', 'seguranca' => '0.3'] as $p => $prioridade) {
     $urls[] = ['loc' => url($p === 'home' ? '' : $p), 'prioridade' => $prioridade];
 }
 
